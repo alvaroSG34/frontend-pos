@@ -14,7 +14,7 @@ const Roles = () => {
 
   const fetchRoles = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/roles/', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/roles/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -30,7 +30,7 @@ const Roles = () => {
   const eliminarRol = async (id: number) => {
     if (!confirm('¿Estás seguro que deseas eliminar este rol?')) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/roles/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/v1/roles/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -47,7 +47,7 @@ const Roles = () => {
   
     try {
       await axios.post(
-        'http://localhost:8000/api/v1/roles/',
+        `${import.meta.env.VITE_API_URL}/api/v1/roles/`,
         { name: nuevoRol },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

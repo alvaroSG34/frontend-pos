@@ -32,7 +32,7 @@ const Usuarios = () => {
 
   const fetchUsuarios = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/users/', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/users/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -48,7 +48,7 @@ const Usuarios = () => {
   const eliminarUsuario = async (id: number) => {
     if (!confirm('¿Eliminar este usuario?')) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/users/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/v1/users/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -61,7 +61,7 @@ const Usuarios = () => {
 
   const crearUsuario = async (data: NewUser) => {
     try {
-      await axios.post('http://localhost:8000/api/v1/users/', data, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users/`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

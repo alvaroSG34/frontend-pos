@@ -21,7 +21,7 @@ const ModalRolUsuario = ({ isOpen, userId, onClose, onRolUpdated }: ModalRolUsua
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/v1/roles/', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/roles/`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setRoles(res.data);
@@ -36,7 +36,7 @@ const ModalRolUsuario = ({ isOpen, userId, onClose, onRolUpdated }: ModalRolUsua
 
   const actualizarRol = async () => {
     try {
-      await axios.put(`http://localhost:8000/api/v1/users/${userId}/role`, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/v1/users/${userId}/role`, {
         role_id: selectedRoleId,
       }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
