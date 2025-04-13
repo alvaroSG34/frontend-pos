@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import ModalRolUsuario from './ModalRolUsuario'; // ajustá la ruta si es necesario  
+import axios from 'axios';  
 type Role = {
   id: number;
   name: string;

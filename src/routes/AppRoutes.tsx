@@ -5,7 +5,6 @@ import ErrorPage from '../pages/ErrorPage'; // 👈
 import ProtectedRoute from '../auth/ProtectedRoute';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import Unauthorized from '../pages/Unauthorized';
-import AdminRoute from '../auth/AdminRoute'; // 👈
 
 const AppRoutes = () => {
   return (
