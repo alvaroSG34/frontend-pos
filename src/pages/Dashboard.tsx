@@ -13,6 +13,7 @@ const Dashboard = () => {
   return (
     <div style={{ padding: '2rem' }}>
       <h1>Bienvenido al Dashboard</h1>
+      <h2>Estan en rol Supervisor</h2>
       <button onClick={handleLogout}>
         Cerrar sesión
       </button>
