@@ -30,7 +30,7 @@ const Inventario = () => {
 
   const fetchInventarios = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/v1/inventario`, {
+      const res = await axios.get(`${API_URL}/api/v1/inventario/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setInventarios(res.data);

@@ -52,7 +52,7 @@ const Reportes = () => {
 
   const fetchCategorias = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/v1/categories`, {
+      const res = await axios.get(`${API_URL}/api/v1/categories/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setCategorias(res.data);

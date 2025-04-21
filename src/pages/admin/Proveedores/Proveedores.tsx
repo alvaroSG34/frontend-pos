@@ -28,7 +28,7 @@ const Proveedores = () => {
 
   const fetchProveedores = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/v1/proveedores`, {
+      const res = await axios.get(`${API_URL}/api/v1/proveedores/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setProveedores(res.data);
@@ -40,7 +40,7 @@ const Proveedores = () => {
   const eliminarProveedor = async (id: number) => {
     if (!confirm('¿Deseas eliminar este proveedor?')) return;
     try {
-      await axios.delete(`${API_URL}/api/v1/proveedores/${id}`, {
+      await axios.delete(`${API_URL}/api/v1/proveedores/${id}/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       showSuccess('Proveedor eliminado');

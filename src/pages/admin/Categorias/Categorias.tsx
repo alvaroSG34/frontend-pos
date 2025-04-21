@@ -21,7 +21,7 @@ const Categorias = () => {
 
   const fetchCategorias = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/v1/categories`, {
+      const res = await axios.get(`${API_URL}/api/v1/categories/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setCategorias(res.data);
@@ -35,7 +35,7 @@ const Categorias = () => {
   const agregarCategoria = async (nombre: string, descripcion: string) => {
     try {
       await axios.post(
-        `${API_URL}/api/v1/categories`,
+        `${API_URL}/api/v1/categories/`,
         { name: nombre, description: descripcion },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

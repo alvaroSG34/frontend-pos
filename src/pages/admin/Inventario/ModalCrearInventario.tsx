@@ -27,7 +27,7 @@ import {
   
     const fetchProductos = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/v1/products`, {
+        const res = await axios.get(`${API_URL}/api/v1/products/`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         setProductos(res.data);
@@ -38,7 +38,7 @@ import {
   
     const handleSubmit = async () => {
       try {
-        await axios.post(`${API_URL}/api/v1/inventario`, {
+        await axios.post(`${API_URL}/api/v1/inventario/`, {
           id_producto: idProducto,
           stock_actual: stockActual,
           stock_minimo: stockMinimo

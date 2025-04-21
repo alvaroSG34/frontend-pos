@@ -23,7 +23,7 @@ import {
   
     const handleSubmit = async () => {
       try {
-        await axios.post(`${API_URL}/api/v1/proveedores`, {
+        await axios.post(`${API_URL}/api/v1/proveedores/`, {
           nombre_empresa, contacto_nombre, email, telefono, direccion
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },

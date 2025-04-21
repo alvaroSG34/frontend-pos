@@ -23,7 +23,7 @@ const ProductoProveedor = () => {
 
   const fetchRelaciones = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/v1/producto-proveedor`, {
+      const res = await axios.get(`${API_URL}/api/v1/producto-proveedor/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setRelaciones(res.data);

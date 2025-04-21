@@ -30,10 +30,9 @@ const AdminDashboard = () => {
     { key: 'productos', label: '📦 Productos' },
     { key: 'reportes', label: '📊 Reportes' },
     { key: 'roles', label: '🔐 Roles y permisos' },
-    { key: 'categorias', label: 'Categorias' },
-    { key: 'proveedores', label: 'Proveedores' },
-    { key: 'inventario', label: 'Inventario' },
-    { key: 'producto-proveedor', label: 'Producto-Proveedor' },
+    { key: 'categorias', label: '🗂️ Categorías' },
+    { key: 'proveedores', label: '🏭 Proveedores' },
+    { key: 'inventario', label: '📦 Inventario' },
   ];
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);

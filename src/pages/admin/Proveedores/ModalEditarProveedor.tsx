@@ -41,7 +41,7 @@ import {
   
     const handleUpdate = async () => {
       try {
-        await axios.put(`${API_URL}/api/v1/proveedores/${proveedor.id}`, {
+        await axios.put(`${API_URL}/api/v1/proveedores/${proveedor.id}/`, {
           nombre_empresa, contacto_nombre, email, telefono, direccion
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },

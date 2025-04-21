@@ -34,7 +34,7 @@ const DetalleVenta = () => {
     useEffect(() => {
         const fetchDetalles = async () => {
             try {
-                const res = await axios.get(`${API_URL}/api/v1/sales/${id}/detalle`, {
+                const res = await axios.get(`${API_URL}/api/v1/sales/${id}/detalle/`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },

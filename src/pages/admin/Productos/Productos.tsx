@@ -32,7 +32,7 @@ const Productos = () => {
 
   const fetchProductos = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/v1/products`, {
+      const res = await axios.get(`${API_URL}/api/v1/products/`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setProductos(res.data);

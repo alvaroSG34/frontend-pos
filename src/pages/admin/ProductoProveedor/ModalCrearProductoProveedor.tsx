@@ -38,10 +38,10 @@ import {
     const fetchData = async () => {
       try {
         const [resProd, resProv] = await Promise.all([
-          axios.get(`${API_URL}/api/v1/products`, {
+          axios.get(`${API_URL}/api/v1/products/`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           }),
-          axios.get(`${API_URL}/api/v1/proveedores`, {
+          axios.get(`${API_URL}/api/v1/proveedores/`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           })
         ]);
@@ -54,12 +54,13 @@ import {
   
     const handleSubmit = async () => {
       try {
-        await axios.post(`${API_URL}/api/v1/producto-proveedor`, {
-          id_producto: idProducto,
-          id_proveedor: idProveedor,
+        await axios.post(`${API_URL}/api/v1/producto-proveedor/`, {
+          producto: { id: idProducto },
+          proveedor: { id: idProveedor },
           precio_compra: precioCompra,
           codigo_proveedor: codigoProveedor || null,
-          es_proveedor_principal: esPrincipal
+          es_proveedor_principal: esPrincipal,
+          ultima_compra: new Date().toISOString()
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
@@ -67,8 +68,13 @@ import {
         onCreated();
         onClose();
         resetForm();
-      } catch {
-        showError('No se pudo registrar la relación');
+      } catch (error: any) {
+        if (axios.isAxiosError(error) && error.response) {
+          console.error('❌ Error de respuesta:', error.response.data);
+          showError(`Error: ${JSON.stringify(error.response.data.detail)}`);
+        } else {
+          showError('No se pudo registrar la relación');
+        }
       }
     };
   
