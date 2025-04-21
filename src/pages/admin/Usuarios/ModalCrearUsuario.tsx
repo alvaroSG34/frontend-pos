@@ -7,21 +7,25 @@ interface Role {
   name: string;
 }
 
-interface ModalUsuarioProps {
+interface ModalCrearUsuarioProps {
   isOpen: boolean;
   onClose: () => void;
   onCreate: (usuario: {
-    username: string;
+    nombre: string;
+    apellido: string;
     email: string;
+    telefono: string;
     password: string;
     role_id: number;
   }) => void;
 }
 
-const ModalUsuario = ({ isOpen, onClose, onCreate }: ModalUsuarioProps) => {
+const ModalCrearUsuario = ({ isOpen, onClose, onCreate }: ModalCrearUsuarioProps) => {
   const [form, setForm] = useState({
-    username: '',
+    nombre: '',
+    apellido: '',
     email: '',
+    telefono: '',
     password: '',
     role_id: 1,
   });
@@ -51,7 +55,14 @@ const ModalUsuario = ({ isOpen, onClose, onCreate }: ModalUsuarioProps) => {
 
   const handleSubmit = () => {
     onCreate(form);
-    setForm({ username: '', email: '', password: '', role_id: 1 });
+    setForm({
+      nombre: '',
+      apellido: '',
+      email: '',
+      telefono: '',
+      password: '',
+      role_id: 1,
+    });
     onClose();
   };
 
@@ -64,11 +75,13 @@ const ModalUsuario = ({ isOpen, onClose, onCreate }: ModalUsuarioProps) => {
     >
       <h2>Nuevo Usuario</h2>
       <div style={styles.formContainer}>
-        <input name="username" placeholder="Usuario" value={form.username} onChange={handleChange}  style={styles.input}/>
-        <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange}  style={styles.input}/>
+        <input name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} style={styles.input} />
+        <input name="apellido" placeholder="Apellido" value={form.apellido} onChange={handleChange} style={styles.input} />
+        <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} style={styles.input} />
+        <input name="telefono" placeholder="Teléfono" value={form.telefono} onChange={handleChange} style={styles.input} />
         <input name="password" type="password" placeholder="Contraseña" value={form.password} onChange={handleChange} style={styles.input} />
 
-        <select name="role_id" value={form.role_id} onChange={handleChange}  style={styles.input}>
+        <select name="role_id" value={form.role_id} onChange={handleChange} style={styles.input}>
           {roles.map((role) => (
             <option key={role.id} value={role.id}>{role.name}</option>
           ))}
@@ -135,4 +148,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 };
 
-export default ModalUsuario;
+export default ModalCrearUsuario;

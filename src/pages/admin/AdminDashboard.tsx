@@ -2,10 +2,15 @@ import { useAuth } from '../../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import Usuarios from './Usuarios';
-import Productos from './Productos';
-import Reportes from './Reportes';
-import Roles from './Roles';
+
+import Productos from '../admin/Productos/Productos';
+import Reportes from './Reportes/Reportes';
+import Roles from './Roles/Roles';
+import Usuarios from './Usuarios/Usuarios';
+import Categorias from './Categorias/Categorias';
+import Proveedores from './Proveedores/Proveedores';
+import Inventario from './Inventario/Inventario';
+import ProductoProveedor from './ProductoProveedor/ProductoProveedor';
 
 const AdminDashboard = () => {
   const { logout } = useAuth();
@@ -25,6 +30,9 @@ const AdminDashboard = () => {
     { key: 'productos', label: '📦 Productos' },
     { key: 'reportes', label: '📊 Reportes' },
     { key: 'roles', label: '🔐 Roles y permisos' },
+    { key: 'categorias', label: '🗂️ Categorías' },
+    { key: 'proveedores', label: '🏭 Proveedores' },
+    { key: 'inventario', label: '📦 Inventario' },
   ];
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -74,6 +82,10 @@ const AdminDashboard = () => {
         {selected === 'productos' && <Productos />}
         {selected === 'reportes' && <Reportes />}
         {selected === 'roles' && <Roles />}
+        {selected === 'categorias' && <Categorias />}
+        {selected === 'proveedores' && <Proveedores />}
+        {selected === 'inventario' && <Inventario />}
+        {selected === 'producto-proveedor' && <ProductoProveedor />}
       </main>
     </div>
   );
