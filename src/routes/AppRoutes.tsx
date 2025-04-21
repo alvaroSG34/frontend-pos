@@ -3,8 +3,8 @@ import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import ErrorPage from '../pages/ErrorPage'; // 👈
 import ProtectedRoute from '../auth/ProtectedRoute';
-import AdminDashboard from '../pages/admin/AdminDashboard';
 import Unauthorized from '../pages/Unauthorized';
+import AdminRoutes from './AdminRoutes';
 
 const AppRoutes = () => {
   return (
@@ -23,10 +23,10 @@ const AppRoutes = () => {
         <Route path="*" element={<ErrorPage />} />
 
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
             <ProtectedRoute>
-              <AdminDashboard />
+              <AdminRoutes />
             </ProtectedRoute>
           }
         />
@@ -37,4 +37,7 @@ const AppRoutes = () => {
   );
 };
 
+
 export default AppRoutes;
+
+
