@@ -62,7 +62,7 @@ const Productos = () => {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <Typography variant="h5" gutterBottom>Productos</Typography>
+      <Typography variant="h5" gutterBottom style={{ color: 'black' }}>Productos</Typography>
 
       <Button variant="contained" color="primary" onClick={() => setOpenCrear(true)}>
         Nuevo Producto

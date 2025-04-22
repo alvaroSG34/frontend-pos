@@ -92,7 +92,7 @@ const Usuarios = () => {
 
   return (
     <div>
-      <h2>👤 Lista de Usuarios</h2>
+      <h2 style={{ color: 'black' }}>👤 Lista de Usuarios</h2>
 
       <button onClick={() => setModalCrearOpen(true)} style={styles.addButton}>
         Agregar usuario

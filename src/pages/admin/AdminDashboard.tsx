@@ -122,6 +122,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: 'pointer',
     marginBottom: '0.5rem',
     transition: 'background 0.2s ease',
+    color: 'black',
   },
   logoutButton: {
     marginTop: '2rem',

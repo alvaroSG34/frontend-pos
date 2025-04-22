@@ -184,9 +184,9 @@ const Reportes = () => {
 
   return (
     <Box sx={{ padding: '2rem' }}>
-      <Typography variant="h5" gutterBottom>
-        Reportes de Ventas
-      </Typography>
+     <Typography variant="h5" gutterBottom style={{ color: 'black' }}>
+  Reportes de Ventas
+</Typography>
 
       <Box display="flex" flexWrap="wrap" gap={2} mb={3}>
         <TextField
