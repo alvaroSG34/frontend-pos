@@ -15,12 +15,14 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { CircularProgress } from '@mui/material';
+
 import { showError } from '../../../utils/toastUtils';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
 import autoTable from 'jspdf-autotable';
 import { saveAs } from 'file-saver';
+import { Backdrop, CircularProgress } from '@mui/material';
+
 
 interface Venta {
   id_venta: number;
@@ -46,6 +48,7 @@ const Reportes = () => {
   const [fechaInicio, setFechaInicio] = useState<Dayjs | null>(null);
   const [fechaFin, setFechaFin] = useState<Dayjs | null>(null);
   const [categoria, setCategoria] = useState('');
+  const [exportando, setExportando] = useState(false);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -61,47 +64,92 @@ const Reportes = () => {
     }
   };
 
-  const exportarPDF = () => {
-    const doc = new jsPDF();
-    doc.text('Reporte de Ventas', 14, 15);
-
-    autoTable(doc, {
-      startY: 20,
-      head: [['Nº Factura', 'Cliente', 'Fecha', 'Método', 'Total', 'Estado']],
-      body: ventas.map((v) => [
-        v.numero_factura,
-        v.cliente,
-        dayjs(v.fecha_venta).format('DD/MM/YYYY'),
-        v.metodo_pago,
-        `$${v.total.toFixed(2)}`,
-        v.estado,
-      ]),
-    });
-
-    doc.save('reporte_ventas.pdf');
+  const exportarPDF = async () => {
+    setExportando(true);
+    try {
+      const ventas = await getVentasConDetalles();
+      const doc = new jsPDF();
+  
+      ventas.forEach((venta, index) => {
+        doc.text(`Factura: ${venta.numero_factura}`, 14, 10);
+        doc.text(`Cliente: ${venta.cliente}`, 14, 16);
+        doc.text(`Fecha: ${new Date(venta.fecha_venta).toLocaleString()}`, 14, 22);
+        doc.text(`Total: $${venta.total}`, 14, 28);
+  
+        autoTable(doc, {
+          startY: 34,
+          head: [['Producto', 'Cantidad', 'Precio Unitario', 'Subtotal']],
+          body: venta.detalles.map((item: any) => [
+            item.nombre,
+            item.cantidad,
+            `$${item.precio_unitario}`,
+            `$${item.subtotal}`
+          ]),
+        });
+  
+        if (index < ventas.length - 1) doc.addPage();
+      });
+  
+      doc.save('reportes-ventas.pdf');
+    } catch (e) {
+      console.error('Error exportando PDF:', e);
+    } finally {
+      setExportando(false);
+    }
   };
+  
 
-  const exportarExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(
-      ventas.map((v) => ({
-        'Nº Factura': v.numero_factura,
-        Cliente: v.cliente,
-        Fecha: dayjs(v.fecha_venta).format('DD/MM/YYYY'),
-        'Método de Pago': v.metodo_pago,
-        Total: v.total,
-        Estado: v.estado,
-      }))
+
+  const getVentasConDetalles = async () => {
+    const ventasConDetalles = await Promise.all(
+      ventas.map(async (venta) => {
+        const { data } = await axios.get(`${API_URL}/api/v1/sales/${venta.id_venta}/with-detalle`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        return data;
+      })
     );
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'ReporteVentas');
-
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array',
-    });
-    const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    saveAs(blob, 'reporte_ventas.xlsx');
+    return ventasConDetalles;
   };
+
+
+  const exportarExcel = async () => {
+    setExportando(true);
+    try {
+      const ventas = await getVentasConDetalles();
+      const wb = XLSX.utils.book_new();
+  
+      ventas.forEach((venta) => {
+        const rows = [
+          ['Factura', venta.numero_factura],
+          ['Cliente', venta.cliente],
+          ['Fecha', new Date(venta.fecha_venta).toLocaleString()],
+          ['Total', venta.total],
+          [],
+          ['Producto', 'Cantidad', 'Precio Unitario', 'Subtotal'],
+          ...venta.detalles.map((item: any) => [
+            item.nombre,
+            item.cantidad,
+            item.precio_unitario,
+            item.subtotal
+          ])
+        ];
+        const sheet = XLSX.utils.aoa_to_sheet(rows);
+        XLSX.utils.book_append_sheet(wb, sheet, `Venta ${venta.id_venta}`);
+      });
+  
+      const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      saveAs(new Blob([buffer]), 'reportes-ventas.xlsx');
+    } catch (e) {
+      console.error('Error exportando Excel:', e);
+    } finally {
+      setExportando(false);
+    }
+  };
+  
+
 
 
   const fetchReportes = async () => {
@@ -149,10 +197,10 @@ const Reportes = () => {
           size="small"
         />
         <DatePicker
-            label="Fecha desde"
-            value={fechaInicio}
-            onChange={(newValue) => setFechaInicio(newValue)}
-            format="DD/MM/YYYY"
+          label="Fecha desde"
+          value={fechaInicio}
+          onChange={(newValue) => setFechaInicio(newValue)}
+          format="DD/MM/YYYY"
         />
         <DatePicker
           label="Fecha hasta"
@@ -206,6 +254,7 @@ const Reportes = () => {
         <Box display="flex" justifyContent="center" alignItems="center" mt={4}>
           <CircularProgress />
         </Box>
+
       ) : (
         <TableContainer component={Paper}>
           <Table size="small">
@@ -225,7 +274,7 @@ const Reportes = () => {
                   <TableCell>{venta.numero_factura}</TableCell>
                   <TableCell>{venta.cliente}</TableCell>
                   <TableCell>
-                  {dayjs(venta.fecha_venta).format('DD/MM/YYYY')}
+                    {dayjs(venta.fecha_venta).format('DD/MM/YYYY')}
                   </TableCell>
                   <TableCell>{venta.metodo_pago}</TableCell>
                   <TableCell align="right">${venta.total.toFixed(2)}</TableCell>
@@ -243,8 +292,12 @@ const Reportes = () => {
           </Table>
         </TableContainer>
       )}
+      <Backdrop open={exportando} sx={{ zIndex: 2000, color: '#fff' }}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
+
 };
 
 export default Reportes;
